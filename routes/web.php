@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CatagoriesController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +30,8 @@ Route::put("/users",[UserController::class,'update']);
 
 Route::delete("/users",[UserController::class,'destroy']);
 
+
+Route::get('/catagory/index',[CatagoriesController::class,'index']);
+
+
+Route::get('/index',[CatagoriesController::class,'index']);
