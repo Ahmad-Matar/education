@@ -9,36 +9,26 @@
 </head>
 <body>
 <div class="container">
+<x-error-mesaage />
 
 <h1>update user</h1>
 <form action="/users" method="post">
     @method('put')
     @csrf
-    <input type="hidden" name="id" value="{{$user->id}}">
 
-    <div class="mb-3">
-      <label for="" class="form-label">Name</label>
-      <input type="text" name="username" value="{{$user->name}}" id="username" class="form-control" placeholder="" aria-describedby="helpId">
-      <small id="helpId" class="text-muted">username</small>
-    </div>
+        <x-input  value="{{$user->id}}"  id="id" name="id"  type="hidden"/>
 
-    <div class="mb-3">
-      <label for="" class="form-label">email</label>
-      <input type="email" name="email" id="email" value="{{$user->email}}"  class="form-control" placeholder="" aria-describedby="helpId">
-      <small id="helpId" class="text-muted">email</small>
-    </div>
+       <x-input value="{{$user->name}}"  lablesmall="username" label="Name" id="username" name="username" />
+        
 
-    <div class="mb-3">
-      <label for="" class="form-label">password</label>
-      <input type="password" name="password" id="password" value="{{$user->password}}" class="form-control" placeholder="" aria-describedby="helpId">
-      <small id="helpId" class="text-muted">password</small>
-    </div>
+        <x-input value="{{$user->email}}"  lablesmall="email" label="Email" id="email" name="email" type="email"/>
 
-    <div class="mb-3">
-      <label for="" class="form-label">confirm_password</label>
-      <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="" aria-describedby="helpId">
-      <small id="helpId" class="text-muted">confirm_password</small>
-    </div>
+
+        <x-input value="{{$user->password}}"  lablesmall="password" label="password" id="password" name="password" type="password"/>
+
+        <x-input lablesmall="confirm_password" label="password" id="confirm_password" name="confirm_password" type="password"/>
+
+
 
     <button type="submit" class="btn btn-primary">update</button>
 </form>

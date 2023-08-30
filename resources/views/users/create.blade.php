@@ -1,43 +1,22 @@
 @extends('layout.index')
 
 @section('content')
-      @if($errors->any())
-          @foreach($errors->all() as $error)
-            <li class="alert alert-danger"> {{$error}} </li>
-
-          @endforeach
-      @endif
+    <x-error-mesaage ></x-error-mesaage>
     <h1>create user</h1>
     <form action="/users" method="post">
         @csrf
 
-        <div class="mb-3">
-          <label for="" class="form-label">Name</label>
-          <input type="text" name="username" id="username" class="form-control" placeholder="" aria-describedby="helpId" >
-          <small id="helpId" class="text-muted">username</small>
-          @errors->has('username')
-            <p class="invalid-feedback">{{}}</p>
-          @enderrors
-        </div>
-        bac
+        <x-input class="invalid" lablesmall="username" label="Name" id="username" name="username" />
+        
 
-        <div class="mb-3">
-          <label for="" class="form-label">email</label>
-          <input type="email" name="email" id="email" class="form-control" placeholder="" aria-describedby="helpId">
-          <small id="helpId" class="text-muted">email</small>
-        </div>
+        <x-input lablesmall="email" label="Email" id="email" name="email" type="email"/>
 
-        <div class="mb-3">
-          <label for="" class="form-label">password</label>
-          <input type="password" name="password" id="password" class="form-control" placeholder="" aria-describedby="helpId">
-          <small id="helpId" class="text-muted">password</small>
-        </div>
 
-        <div class="mb-3">
-          <label for="" class="form-label">confirm_password</label>
-          <input type="password" name="password_confirmation" id="confirm_password" class="form-control" placeholder="" aria-describedby="helpId">
-          <small id="helpId" class="text-muted">confirm_password</small>
-        </div>
+        <x-input lablesmall="password" label="password" id="password" name="password" type="password"/>
+
+        <x-input lablesmall="confirm_password" label="password" id="confirm_password" name="confirm_password" type="password"/>
+
+
 
         <button type="submit" class="btn btn-primary">save</button>
     </form>
