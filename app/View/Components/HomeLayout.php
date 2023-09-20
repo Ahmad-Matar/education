@@ -25,7 +25,7 @@ class HomeLayout extends Component
      */
     public function render()
     {
-        return view('components.input',[
+        return view('components.home-layout',[
             'error' => $this->error
         ]);
     }

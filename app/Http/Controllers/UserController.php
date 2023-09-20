@@ -26,8 +26,13 @@ class UserController extends Controller
         // }else{
         //     dd("error");
         // }
-         $users = DB::table('users')->get();
-        //  $users2 = User::find();
+     //    $users = DB::table('users')->where('id','>=',1)->paginate(3);
+      //$users = DB::select('select * from users');
+
+
+
+         $users= User::paginate(3,'*','p');
+         dd($users);
 
         //  dd($users2);
          
@@ -50,7 +55,7 @@ class UserController extends Controller
       $rules = [
         'username' => ['required','string','between:5,255'],
         'email' => ['required', 'email'],
-        'password' => ['required', 'confirmed','min:8'],
+        'password' => ['required','min:8'],
 
       ];
     //  $request->validate($rules);
@@ -78,13 +83,20 @@ class UserController extends Controller
               //                       'created_at' => now(),
               //                       'updated_at' => now()]
               //                   );
-              $user = new User();
-              $user->name = $request->post("username");
-              $user->email = $request->post("email");
-              $user->password = $request->post("password");
-              $user->save();
+              // $user = new User();
+              // $user->name = $request->post("username");
+              // $user->email = $request->post("email");
+              // $user->password = $request->post("password");
+              // $user->save();
 
-              return  redirect('users/index');
+              User::create([
+                'name' => $request->post("username"),
+                'email' => $request->post("email"),
+                'password' => $request->post("password")
+
+              ]);
+
+              return  redirect()->route('user.index');
       
    }
 
@@ -101,8 +113,8 @@ class UserController extends Controller
       'password' => ['required', 'confirmed','min:8'],
 
     ];
-    $request->validate($rules);
-    //$this->validate($request,$rules);
+   // $request->validate($rules);
+   // $this->validate($request,$rules);
 
 
     // $validate = Validator::make($request->all(),$rules,[
