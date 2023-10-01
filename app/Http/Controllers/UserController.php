@@ -32,7 +32,7 @@ class UserController extends Controller
 
 
          $users= User::paginate(3,'*','p');
-         dd($users);
+        // dd($users);
 
         //  dd($users2);
          

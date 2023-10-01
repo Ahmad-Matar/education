@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\CatagoriesController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Client\ProfileController as ClientProfileController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,55 +12,59 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
 Route::get('/', function () {
-    return view('Home');
+    return view('welcome');
 });
 
-// Route::prefix('')->as()->group(function(){
-//     Route::get('index',[UserController::class,'index'])->name('index');
-//     Route::get('/show/{id}',[UserController::class,'show'])->name('show');
-    
-//     Route::get("/create",[UserController::class,'create'])->name('create');
-//     Route::post("/",[UserController::class,'insert'])->name('insert');
-    
-//     Route::get("/{id}/edit",[UserController::class,'edit'])->name('edit');
-//     Route::put("/",[UserController::class,'update'])->name('update');
-    
-//     Route::delete("/",[UserController::class,'destroy'])->name('destroy');
-// });
-Route::group([
-    'prefix' => 'users',
-    'as' => 'user.',
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-],function(){
-    Route::get('index',[UserController::class,'index'])->name('index');
-    Route::get('/show/{id}',[UserController::class,'show'])->name('show');
-    
-    Route::get("/create",[UserController::class,'create'])->name('create');
-    Route::post("/",[UserController::class,'insert'])->name('insert');
-    
-    Route::get("/{id}/edit",[UserController::class,'edit'])->name('edit');
-    Route::put("/",[UserController::class,'update'])->name('update');
-    
-    Route::delete("/",[UserController::class,'destroy'])->name('destroy');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+require __DIR__.'/auth.php';
 
-Route::resource('product',ProductController::class)->except('');
+
+
+Route::get('/users/index',[UserController::class,'index'])->middleware('auth');
+Route::get('/users/show/{id}',[UserController::class,'show']);
+
+Route::get("/users/create",[UserController::class,'create']);
+Route::post("/users",[UserController::class,'insert']);
+
+Route::get("/users/{id}/edit",[UserController::class,'edit']);
+Route::put("/users",[UserController::class,'update']);
+
+Route::delete("/users",[UserController::class,'destroy']);
+
 
 Route::get('/catagory/index',[CatagoriesController::class,'index']);
 
 
 Route::get('/index',[CatagoriesController::class,'index']);
 
+Route::prefix('client')->middleware('auth')->group(function () {
+    Route::get('edit/profile',[ClientProfileController::class,'edit'])  ;
+    Route::put('profile/update',[ClientProfileController::class,'update'])->name('profile.update')  ;
+    Route::get('show/profile',[ClientProfileController::class,'show'])  ;
 
+    
+});
 
-// Route::get('product/index',[ProductController::class,'index']);
+Route::prefix('post')->middleware('auth')->group(function () {
+    Route::get('get/post',[PostController::class,'index'])  ;
+    Route::get('get/userpost',[PostController::class,'show'])  ;
+    Route::get('create/post',[PostController::class,'create'])  ;
+    Route::post('create/post',[PostController::class,'store'])->name('post.store')  ;
 
-// Route::get('/product/create',[ProductController::class,'create']);
-// Route::post('/product',[ProductController::class,'store']);
+    
+});
